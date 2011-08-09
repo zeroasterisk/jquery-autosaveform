@@ -1,9 +1,7 @@
 h2. jQuery AutoSaveForm
 
-* @author Alan Blount alan+asf@zeroasterisk.com
-* @version 1.0.0
-* @date 2011.08.09
-* @link https://github.com/zeroasterisk/jquery-autosaveform
+* author Alan Blount alan+asf@zeroasterisk.com
+* link https://github.com/zeroasterisk/jquery-autosaveform
 
 NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
 
