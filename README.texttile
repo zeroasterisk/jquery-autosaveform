@@ -1,0 +1,32 @@
+h2. jQuery AutoSaveForm
+
+* @author Alan Blount alan+asf@zeroasterisk.com
+* @version 1.0.0
+* @date 2011.08.09
+* @link https://github.com/zeroasterisk/jquery-autosaveform
+
+NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
+
+
+
+h3. USAGE: setting up one form by ID, custom options
+
+<pre><code>$("#MyForm").autoSaveForm({
+	autosave_frequency: 0, 										# autosave disabled
+	autosave_onclick: "#my-container a[href]:not([rel])",		# custom links to be bound as autosavefirst
+	form_inputs: "select",										# only considering selects in the form
+	attr_data: "data-ASFcustom-serialize",						# customize internal attributes for forms' data
+	attr_status: "data-ASFcustom-status",						# customize internal attributes for forms' status
+	form_response_regex: "Saved"								# save response must contain: Saved
+	form_action: "/myform/submit.php"							# over-ride the submit action for the form (edge case)
+	});</code></pre>
+
+h3. USAGE: setting up any number of forms, default options
+
+<pre><code>$("#my-container form").autoSaveForm();</code></pre>
+
+h3. EXTRA CONFIGURATIONS
+
+<pre><code>$.fn.ASF_beforeunload = false; 									# disable onbeforeunload functionality
+$.fn.ASF_beforeunload_message = "are you sure?";				# custom message before unload (if we need to prompt)
+$.fn.ASF_debug = true;											# turn on debug messages in console</code></pre>
