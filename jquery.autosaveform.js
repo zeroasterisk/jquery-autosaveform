@@ -2,7 +2,7 @@
 * jQuery AutoSaveForm
 *
 * @author Alan Blount alan+asf@zeroasterisk.com
-* @version 1.0.0
+* @version 1.0.1
 * @date 2011.08.09
 * @link https://github.com/zeroasterisk/jquery-autosaveform
 *
@@ -151,33 +151,36 @@ $.fn.ASF_debug = true;											# turn on debug messages in console
 					asflog("Clicked on link, was a bookmark or tab", $(this), $(form));
 					return true; // bookmark or tab
 				}
-				if ($(form).ASF_status()=="unchanged") {
-					asflog("Clicked on link, status == unchanged", $(this), $(form));
-					return true; // no changes, just continue to link
-				}
+				allowClickThrough = true;
 				// trigger autosave
 				ASF_forms = $(window).data("ASF_forms");
-				console.log("autosave.click", $(this), $(form), ASF_forms);
 				if ($.isArray(ASF_forms) && ASF_forms.length > 0) {
 					$(ASF_forms).each(function(i, form) {
+						asflog("autosave.click", $(this), $(form));
 						options = $(form).data("ASF_options");
-						$(form).trigger("autosave");
+						if ($(form).ASF_status()=="unchanged") {
+							asflog("Clicked on link, status == unchanged", $(this), $(form));
+						} else {
+							$(form).trigger("autosave");
+						}
 						if (!$(form).ASF_check_status($(form).ASF_status())) {
 							asflog("Click Blocked. Form Status: " + $(form).attr(options.attr_status), $(this), $(form));
-							return false;
+							allowClickThrough = false;
 						}
 					});
 				}
-				asflog("Clicked on link, continued", $(this), $(form));
-				// continue
-				return true;
+				// what do we return?
+				if (allowClickThrough) {
+					asflog("Clicked on link", allowClickThrough, $(this), $(form));
+					return true;
+				}
+				return false;
 			});
 		});
 		// activate ASF_beforeunload (if not already done)
 		if ($.fn.ASF_beforeunload) {
 			$.fn.ASF_beforeunload = false; // no need to re-initialize
 			$(window).bind("beforeunload.autosaveform", function() {
-				console.log("beforeunload", $(window).data("ASF-beforeunload-status"));
 				$(window).data("ASF-beforeunload-prompt", $.fn.ASF_beforeunload_message);
 				$(window).data("ASF-beforeunload-status", "init-unload");
 				ASF_forms = $(window).data("ASF_forms");
@@ -190,7 +193,6 @@ $.fn.ASF_debug = true;											# turn on debug messages in console
 						}
 					});
 				}
-				console.log("beforeunload", $(window).data("ASF-beforeunload-status"));
 				if ($(window).data("ASF-beforeunload-status") == "init-unload") {
 					asflog("beforeunload continues: All Forms Fine");
 					$(window).data("ASF-beforeunload-prompt", "");
