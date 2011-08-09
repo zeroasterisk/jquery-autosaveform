@@ -10,7 +10,12 @@
 *
 */
 /*
+### USAGE: setting up any number of forms, default options ###
+
+$("#my-container form").autoSaveForm();
+
 ### USAGE: setting up one form by ID, custom options ###
+
 $("#MyForm").autoSaveForm({
 	autosave_frequency: 0, 										# autosave disabled
 	autosave_onclick: "#my-container a[href]:not([rel])",		# custom links to be bound as autosavefirst
@@ -21,13 +26,22 @@ $("#MyForm").autoSaveForm({
 	form_action: "/myform/submit.php"							# over-ride the submit action for the form (edge case)
 	});
 
-### USAGE: setting up any number of forms, default options ###
-$("#my-container form").autoSaveForm();
+### EXTRA: bind event handlers for callbacks ###
+
+$("#MyForm").autoSaveForm({
+	form_response_regex: "Saved"
+}).bind("autosave_complete", function() {
+	pageTracker._trackEvent("ajax", "autoSaveForm", window.location.href, $(this).attr("action"));
+}).bind("autosave_error", function() {
+	pageTracker._trackEvent("ajax", "autoSaveFormERROR", window.location.href, $(this).attr("action"));
+});
 
 ### EXTRA CONFIGURATIONS ###
+
 $.fn.ASF_beforeunload = false; 									# disable onbeforeunload functionality
 $.fn.ASF_beforeunload_message = "are you sure?";				# custom message before unload (if we need to prompt)
 $.fn.ASF_debug = true;											# turn on debug messages in console
+
 */
 (function ($) {
 	// plugin options defaults (set per form)

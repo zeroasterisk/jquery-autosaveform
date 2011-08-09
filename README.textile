@@ -7,6 +7,10 @@ NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
 
 
 
+h3. USAGE: setting up any number of forms, default options
+
+<pre><code>$("#my-container form").autoSaveForm();</code></pre>
+
 h3. USAGE: setting up one form by ID, custom options
 
 <pre><code>$("#MyForm").autoSaveForm({
@@ -19,9 +23,15 @@ h3. USAGE: setting up one form by ID, custom options
 	form_action: "/myform/submit.php"							# over-ride the submit action for the form (edge case)
 	});</code></pre>
 
-h3. USAGE: setting up any number of forms, default options
+h3. EXTRA: bind event handlers for callbacks
 
-<pre><code>$("#my-container form").autoSaveForm();</code></pre>
+<pre><code>$("#MyForm").autoSaveForm({
+	form_response_regex: "Saved"
+}).bind("autosave_complete", function() {
+	pageTracker._trackEvent("ajax", "autoSaveForm", window.location.href, $(this).attr("action"));
+}).bind("autosave_error", function() {
+	pageTracker._trackEvent("ajax", "autoSaveFormERROR", window.location.href, $(this).attr("action"));
+});</code></pre>
 
 h3. EXTRA CONFIGURATIONS
 
