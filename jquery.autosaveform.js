@@ -176,6 +176,17 @@ $.fn.ASF_debug = true;											# turn on debug messages in console
 				}
 				return false;
 			});
+
+			// If using unload feature, deregister a form from autosaving upon unload
+			if ($.fn.ASF_beforeunload) {
+				$(form).submit(function() {
+					var ASF_forms = $(window).data("ASF_forms");
+					ASF_forms = $.map(ASF_forms, function(x) {
+						return x === form ? null : x;
+					});
+					$(window).data("ASF_forms", ASF_forms);
+				});
+			}
 		});
 		// activate ASF_beforeunload (if not already done)
 		if ($.fn.ASF_beforeunload) {
