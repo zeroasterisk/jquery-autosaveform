@@ -2,8 +2,9 @@
 * jQuery AutoSaveForm
 *
 * @author Alan Blount alan+asf@zeroasterisk.com
-* @version 1.0.1
+* @version 1.0.2
 * @date 2011.08.09
+* @date 2013.05.07
 * @link https://github.com/zeroasterisk/jquery-autosaveform
 *
 * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
@@ -110,7 +111,7 @@ $.fn.ASF_debug = true;											# turn on debug messages in console
 				var formData = $(this).find(options.form_inputs).serialize();
 				// save/submit form
 				$.ajax({
-					async: false,
+					async: true,
 					cache: false,
 					type: "POST",
 					url: form_action,
