@@ -7,34 +7,35 @@ NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
 
 
 
-h3. USAGE: setting up any number of forms, default options
+h3. USAGE: setting up any number of forms, just add the class 'autosave'
 
-<pre><code>$("#my-container form").autoSaveForm();</code></pre>
+<pre><code>
+<form action="..." class="autosave ...">...</form>
+</code></pre>
 
-h3. USAGE: setting up one form by ID, custom options
+h3. USAGE: status note (if it doesn't exist, automatically added)
 
-<pre><code>$("#MyForm").autoSaveForm({
-	autosave_frequency: 0, 										# autosave disabled
-	autosave_onclick: "#my-container a[href]:not([rel])",		# custom links to be bound as autosavefirst
-	form_inputs: "select",										# only considering selects in the form
-	attr_data: "data-ASFcustom-serialize",						# customize internal attributes for forms' data
-	attr_status: "data-ASFcustom-status",						# customize internal attributes for forms' status
-	form_response_regex: "Saved"								# save response must contain: Saved
-	form_action: "/myform/submit.php"							# over-ride the submit action for the form (edge case)
-	});</code></pre>
+Inside the form, create an empty element of any type with a class of `autosave-status`
 
-h3. EXTRA: bind event handlers for callbacks
+<pre><code>
+<form action="..." class="autosave ...">...
+<span class="autosave-status muted"></span>
+</form>
+</code></pre>
 
-<pre><code>$("#MyForm").autoSaveForm({
-	form_response_regex: "Saved"
-}).bind("autosave_complete", function() {
-	pageTracker._trackEvent("ajax", "autoSaveForm", window.location.href, $(this).attr("action"));
-}).bind("autosave_error", function() {
-	pageTracker._trackEvent("ajax", "autoSaveFormERROR", window.location.href, $(this).attr("action"));
-});</code></pre>
+h3. USAGE: custom callbacks
 
-h3. EXTRA CONFIGURATIONS
+<pre><code>
+$('#myform').on('saved', function(e) {
+	console.log('autosave complete', e);
+});
+</code></pre>
 
-<pre><code>$.fn.ASF_beforeunload = false; 									# disable onbeforeunload functionality
-$.fn.ASF_beforeunload_message = "are you sure?";				# custom message before unload (if we need to prompt)
-$.fn.ASF_debug = true;											# turn on debug messages in console</code></pre>
+h3. CONFIGURATIONS
+
+<pre><code>
+<form action="..." class="autosave ..."
+	data-autosave-save-interval="30"
+	data-autosave-status-interval="1"
+	>...</form>
+</code></pre>
