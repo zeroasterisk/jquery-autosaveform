@@ -181,11 +181,7 @@ $.fn.ASF_debug = true;											# turn on debug messages in console
 			// If using unload feature, deregister a form from autosaving upon unload
 			if ($.fn.ASF_beforeunload) {
 				$(form).submit(function() {
-					var ASF_forms = $(window).data("ASF_forms");
-					ASF_forms = $.map(ASF_forms, function(x) {
-						return x === form ? null : x;
-					});
-					$(window).data("ASF_forms", ASF_forms);
+					$(form)._unloadForm();
 				});
 			}
 		});
@@ -242,6 +238,30 @@ $.fn.ASF_debug = true;											# turn on debug messages in console
 		});
 		return newStatus;
 	}
+	/**
+	* removes bindings and existence from AutoSaveForm. Good for unloading AutoSaveForms from
+	* single page applications.
+    */
+    $.fn.ASF_destroy = function () {
+        $.each(this, function (i, form) {
+            var $form = $(form);
+            $form.unbind();
+            $form._unloadForm();
+            $form.remove();
+        });
+    };
+    /**
+     * de-registers single form from AutoSaveForm construct
+     */
+    $.fn._unloadForm = function () {
+    	var form = this;
+    	var ASF_forms = $(window).data("ASF_forms");
+		ASF_forms = $.map(ASF_forms, function(x) {
+			return x === form[0] ? null : x;
+		});
+		$(window).data("ASF_forms", ASF_forms);
+		window.ASF_forms = ASF_forms;
+    }
 	// helper function for console logging
 	asflog = function() {
 		var identify = '[jquery.autosaveform]';
